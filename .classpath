@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="src" path="test"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="/CommonChickenRuntimeEngine/CCRE.jar" sourcepath="/CommonChickenRuntimeEngine/src"/>
+	<classpathentry kind="lib" path="C:/MentorGraphics/conneXion_2016.1/svx/java/tools/eclipse_ganymede/SVXJava/parts/svx.jar"/>
+	<classpathentry kind="src" path="/DeploymentEngine"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

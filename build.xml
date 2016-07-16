@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+
+<!--
+/*
+ * Copyright 2014-2015 Cel Skeggs
+ * 
+ * This file is part of the CCRE, the Common Chicken Runtime Engine.
+ * 
+ * The CCRE is free software: you can redistribute it and/or modify it under the
+ * terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation, either version 3 of the License, or (at your option) any
+ * later version.
+ * 
+ * The CCRE is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
+ * A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more
+ * details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with the CCRE.  If not, see <http://www.gnu.org/licenses/>.
+ */
+ -->
+
+<project name="Build Jar" default="build-jar">
+
+	<property name="src.dir" value="src" />
+	<property name="build.dir" value="build" />
+    <property name="CommonChickenRuntimeEngine.location" value="../../common-chicken-runtime-engine/CommonChickenRuntimeEngine"/>
+
+    <path id="SVConnection.classpath">
+        <pathelement location="bin"/>
+    </path>
+	<target name="deps">
+			<delete file="Dependencies.jar" />
+			<jar destfile="Dependencies.jar" update="true">
+				<zipfileset src="${CommonChickenRuntimeEngine.location}/CCRE.jar"/>
+				<zipfileset src="../../../../MentorGraphics/conneXion_2016.1/svx/java/tools/eclipse_ganymede/SVXJava/parts/svx.jar"/>
+			</jar>
+		</target>
+	<target name ="clean">
+		<delete file = "SVConnection.jar"/>
+	</target>
+	<target name="compile" depends = "deps">
+		<delete dir="${build.dir}" />
+		<mkdir dir="${build.dir}" />
+		<javac destdir="${build.dir}" srcdir="${src.dir}" includeantruntime="false" classpath = "Dependencies.jar" debug="true"  >
+			<src path = "src"/>
+		</javac>
+	</target>
+
+	<target name="build-jar" depends="compile" >
+		<delete file="SVConnection.jar" />
+		<jar destfile="SVConnection.jar" update="true" >
+			<fileset dir="${build.dir}" includes="**/*.class" />
+			<fileset dir="${build.dir}" includes="**/*.properties" />
+			<zipfileset src = "../../../../MentorGraphics/conneXion_2016.1/svx/java/tools/eclipse_ganymede/SVXJava/parts/svx.jar"></zipfileset>
+		</jar>
+	</target>
+</project>
