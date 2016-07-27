@@ -22,5 +22,5 @@ public class SVXConsumerWrapper extends AbstractUpdatingInput implements ISVXNot
 		perform();
 		done.set(true);
 	}
-
+	
 }

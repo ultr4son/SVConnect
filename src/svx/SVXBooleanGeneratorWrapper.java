@@ -8,6 +8,7 @@ import com.mentor.systems.svx.SVXTemporalSpecSignalGenerator;
 import ccre.channel.BooleanOutput;
 import ccre.channel.EventInput;
 import ccre.channel.EventOutput;
+import ccre.time.Time;
 
 /**
  * A BooleanOutput wrapper around a ISVXComponentSignalGeneratorBoolean. 
@@ -21,6 +22,7 @@ public class SVXBooleanGeneratorWrapper implements BooleanOutput
 	 */
 	private static final long serialVersionUID = 6882597992327515740L;
 	ISVXComponentSignalGeneratorBoolean generator;
+	boolean currentValue;
 	private EventOutput sendEvent = new EventOutput()
 			{
 
@@ -32,6 +34,8 @@ public class SVXBooleanGeneratorWrapper implements BooleanOutput
 				@Override
 				public void event() {
 					try {
+						//generator.set(currentValue);
+						System.out.println("Sending : " + currentValue + " Time is " + Time.currentTimeMillis());
 						generator.send();
 					} catch (SVXStatusException e) {
 						// TODO Auto-generated catch block
@@ -47,7 +51,7 @@ public class SVXBooleanGeneratorWrapper implements BooleanOutput
 	public void set(boolean value) {
 		try {
 			generator.set(value);
-		
+			currentValue = value;
 		}
 		catch (SVXStatusException e) {
 			// TODO Auto-generated catch block

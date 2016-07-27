@@ -17,7 +17,7 @@ import ccre.drivers.ctre.talon.TalonPulseWidth;
 import ccre.drivers.ctre.talon.TalonSoftLimits;
 
 public class SVXTalonCAN extends TalonExtendedMotor{
-
+	int channel;
 	@Override
 	public Faultable<Faults> modFaults() {
 		// TODO Auto-generated method stub
@@ -67,14 +67,54 @@ public class SVXTalonCAN extends TalonExtendedMotor{
 
 	@Override
 	public TalonGeneralConfig modGeneralConfig() {
-		// TODO Auto-generated method stub
-		return null;
+		return new TalonGeneralConfig() {
+			
+			@Override
+			public BooleanIO getBrakeNotCoast() {
+				// TODO Auto-generated method stub
+				return null;
+			}
+			
+			@Override
+			public void configureReversed(boolean flipSensor, boolean flipOutput) {
+				
+			}
+			
+			@Override
+			public void configureNominalOutputVoltage(float forwardVoltage, float reverseVoltage) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void configureMaximumOutputVoltage(float forwardVoltage, float reverseVoltage) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void configureGeneralFeedbackUpdateRate(int millisGeneral, int millisFeedback) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void configureAllowableClosedLoopError(float allowableCloseLoopError) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void activateFollowerMode(int talonID) {
+				// TODO Auto-generated method stub
+				
+			}
+		};
 	}
 
 	@Override
 	public int getDeviceID() {
-		// TODO Auto-generated method stub
-		return 0;
+		return channel;
 	}
 
 	@Override
@@ -85,20 +125,17 @@ public class SVXTalonCAN extends TalonExtendedMotor{
 
 	@Override
 	public void enable() throws ExtendedMotorFailureException {
-		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	public void disable() throws ExtendedMotorFailureException {
-		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	public FloatOutput asMode(OutputControlMode mode) throws ExtendedMotorFailureException {
-		// TODO Auto-generated method stub
-		return null;
+		return RoboRioBoard.CANJaguar(channel).OutControlMode(mode);
 	}
 
 	@Override
@@ -115,13 +152,12 @@ public class SVXTalonCAN extends TalonExtendedMotor{
 
 	@Override
 	public boolean hasInternalPID() {
-		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
 
 	@Override
 	public void setInternalPID(float P, float I, float D) throws ExtendedMotorFailureException {
-		// TODO Auto-generated method stub
+		RoboRioBoard.CANJaguar(channel).PID(P, I, D);
 		
 	}
 

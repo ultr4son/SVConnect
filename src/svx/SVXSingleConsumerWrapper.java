@@ -7,6 +7,7 @@ import com.mentor.systems.svx.SVXTemporalSpecSignalConsumer;
 
 import ccre.channel.FloatInput;
 import ccre.log.Logger;
+import ccre.time.Time;
 
 /**
  * A FloatInput wrapper around a ISVXComponentSignalConsumerSingle. Handles getting and notification logic.
@@ -34,7 +35,7 @@ public class SVXSingleConsumerWrapper  extends SVXConsumerWrapper implements Flo
 			e.printStackTrace();
 		}
 	}
-
+	
 	@Override
 	public float get() {
 		return currentValue;
@@ -43,9 +44,9 @@ public class SVXSingleConsumerWrapper  extends SVXConsumerWrapper implements Flo
 	@Override
 	public void notification() throws SVXStatusException {
 		currentValue = consumer.get();
-		Logger.info("My name is " + name + " and I just got " + currentValue);
+		 System.out.println("Got: " + currentValue + " time is " + Time.currentTimeMillis());
 		super.notification();
 		
 	}
-
+	
 }

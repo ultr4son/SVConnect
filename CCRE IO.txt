@@ -1,0 +1,140 @@
+RoboRio:
+Outputs:
+	Digital Output 0-9: Boolean
+	PWM 0-9: Real
+	Relay 0-3: Boolean
+	I2C
+	SPI
+	RS-232
+	Robot Signal Light
+Inputs:
+	Digital Input 0-9: Boolean
+	Analog Input 0-3: Real
+	Joystick Buttons: Boolean
+	Joystick Axes: Real
+	Joystick POV: Integer
+CANTalon:
+Outputs(Motor):
+	Motor PWM: Real
+Outputs(CAN):	
+	Bus Voltage: Real
+	Output Voltage: Real
+	Output Current: Real
+	Temperature: Real
+Inputs:	
+	Analog sensor: Real
+	PWM Sensor: Real
+	Encoder A Pin: Boolean
+	Encoder B Pin: Boolean
+	Duty Cycle: Real
+CANJaguar:
+Outputs(Motor):
+	Motor PWM: Real
+Outputs(CAN):	
+	Bus Voltage: Real
+	Output Voltage: Real
+	Output Current: Real
+	Temperature: Real
+Inputs:
+	Encoder A Pin: Boolean
+	Encoder B Pin: Boolean
+	Inputs(CAN):
+	Duty Cycle: Real
+
+Jaguar:
+	Outputs:
+		Motor PWM: Real
+	Inputs:
+		PWM Command: Real
+Talon:
+	Outputs:
+		Motor PWM: Real
+	Inputs:
+		PWM Command: Real
+
+Victor:
+	Outputs:
+		Motor PWM: Real
+	Inputs:
+		PWM Command: Real
+VictorSR:
+	Outputs:
+		Motor PWM: Real
+	Inputs(CAN):
+		Duty Cycle: Real
+Spark:
+	Outputs:
+		Motor PWM: Real
+	Inputs:
+		PWM Command: Real
+SD540:
+	Outputs:
+		Motor PWM: Real
+	Inputs:
+		PWM Command: Real
+Servo:
+	Outputs:
+		Motor Angle: Real
+	Inputs:
+		PWM Command: Real
+
+Gyroscope:
+	Outputs:
+		Angle Voltage (V/(deg/s)): Real
+	Inputs:
+		Rotation: Real
+Encoder:
+	Outputs:
+		A Pin: Boolean
+		B Pin: Boolean
+	Inputs:
+		Shaft Rotation: Real
+Counter:
+	Outputs:
+		Count Up Pin: Boolean
+		Count Down Pin: Boolean
+	Inputs:
+		Shaft Rotation
+
+
+Solenoid Module:
+Outputs:
+	Solenoid power: Real
+	Compressor power: Real
+Outputs(CAN):
+	Pressure Switch: Boolean
+	Compressor Running: Boolean
+	Compressor Current: Boolean
+Inputs:
+	Unregulated Power: Real
+	Pressure Switch: Boolean
+
+Power Distribution Board:
+Outputs:
+	Power Channel 1-16 12V: Real
+	VRM Power: Real
+	RoboRio Power: Real
+Outputs(CAN):
+	Channel 1-16 Current: Real
+	PDP Voltage: Real
+Inputs: 
+	12V Power: Real
+
+Voltage Regulator Module:
+Outputs: 
+	Power 12V @ 2A: Real
+	Power 12V @ 500 mA: Real
+	Power 5V @ 2A: Real
+	Power 5V @ 500 mA: Real
+Inputs:
+	Power 12V: Real
+
+Joytstick:
+Outputs:
+	Axis Value: Real
+	Button Value: Boolean
+	POV Value: Real
+	Rumble Value: Real
+Inputs:
+	Rumble Command: Real
+	

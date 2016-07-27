@@ -9,6 +9,7 @@ import ccre.channel.EventInput;
 import ccre.channel.EventOutput;
 import ccre.channel.FloatOutput;
 import ccre.log.Logger;
+import ccre.time.Time;
 
 /** 
  * A FloatOutput wrapper around a ISVXComponentSignalGeneratorSingle. Makes sure to send 
@@ -19,7 +20,7 @@ public class SVXSingleGeneratorWrapper implements FloatOutput
 {
 
 	ISVXComponentSignalGeneratorSingle generator;
-	float setvalue = 0.0f;
+	float currentValue = 0.0f;
 	/**
 	 * 
 	 */
@@ -35,7 +36,8 @@ public class SVXSingleGeneratorWrapper implements FloatOutput
 		@Override
 		public void event() {
 			try {
-				generator.set(setvalue);
+				//generator.set(currentValue);
+				System.out.println("Sending : " + currentValue + " Time is " + Time.currentTimeMillis());
 				generator.send();
 			} catch (SVXStatusException e) {
 				// TODO Auto-generated catch block
@@ -49,7 +51,7 @@ public class SVXSingleGeneratorWrapper implements FloatOutput
 	{
 		try 
 		{
-			setvalue = value;
+			currentValue = value;
 			generator.set(value);
 			
 			
@@ -58,6 +60,10 @@ public class SVXSingleGeneratorWrapper implements FloatOutput
 			Logger.severe("SVX Error");
 			Logger.severe(e.getStackTrace().toString());
 		}
+	}
+	public void setWhenToSend(EventInput sendWhen)
+	{
+		sendWhen.send(sendEvent);
 	}
 	public SVXSingleGeneratorWrapper(ISVXFactory factory, String name, SVXTemporalSpecSignalGenerator generatorTemporalSpec, EventInput sendWhen)
 	{

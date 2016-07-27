@@ -11,11 +11,9 @@ import ccre.channel.FloatInput;
 import ccre.channel.FloatOutput;
 import ccre.ctrl.ExtendedMotor;
 import ccre.ctrl.ExtendedMotorFailureException;
-import svconnect.RoboRioBoard;
 
 public class SVXJaguar extends ExtendedMotor {
 	int pin;
-	FloatIO jaguarOutput;
 	@Override
 	public void enable() throws ExtendedMotorFailureException {
 		
@@ -33,10 +31,7 @@ public class SVXJaguar extends ExtendedMotor {
 
 	@Override
 	public FloatOutput asMode(OutputControlMode mode) throws ExtendedMotorFailureException {
-		//Control logic happens at the Jaguar itself, so there's nothing we can do here.
-		FloatOutput out = RoboRioBoard.pwmOutputPin(pin);
-		jaguarOutput = out.cell(0.0f);
-		return out;
+		return RoboRioBoard.CANJaguar(pin).OutControlMode(mode);
 	}
 
 	@Override
@@ -48,13 +43,13 @@ public class SVXJaguar extends ExtendedMotor {
 						switch(type)
 						{
 						case BUS_VOLTAGE:
-							return RoboRioBoard.battery().get();
+							return RoboRioBoard.CANJaguar(pin).InBusVoltage().get();uu
 						case OUTPUT_CURRENT:
-							return 0.0f; //TODO: Might need to add some hidden feedback system.
+							return RoboRioBoard.CANJaguar(pin).InOutputCurrent().get();
 						case OUTPUT_VOLTAGE:
-							return jaguarOutput.multipliedBy(RoboRioBoard.battery()).get();
+							return RoboRioBoard.CANJaguar(pin).InOutputVoltage().get(); //TODO: Calculate off current and bus voltage?
 						case TEMPERATURE:
-							return 20.0f; 
+							return RoboRioBoard.CANJaguar(pin).InTemperature().get();
 						default:
 						throw new IllegalArgumentException("Invalid type!");
 						}
@@ -75,7 +70,7 @@ public class SVXJaguar extends ExtendedMotor {
 
 	@Override
 	public void setInternalPID(float P, float I, float D) throws ExtendedMotorFailureException {
-		//Control logic happens at the Jaguar itself, so there's nothing we can do here.
+		RoboRioBoard.CANJaguar(pin).PID(P, I, D);
 	}
 	public SVXJaguar(int id)
 	{

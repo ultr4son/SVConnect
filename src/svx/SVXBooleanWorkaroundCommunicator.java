@@ -30,4 +30,5 @@ public class SVXBooleanWorkaroundCommunicator extends SVXCommunicator {
 		registerPin(workaround);
 		return workaround;
 	}
+	
 }

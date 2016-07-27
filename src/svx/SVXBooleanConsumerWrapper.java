@@ -30,7 +30,7 @@ public class SVXBooleanConsumerWrapper extends SVXConsumerWrapper implements Boo
 	public boolean get() {
 		return currentValue;
 	}
-
+	
 	public SVXBooleanConsumerWrapper(ISVXFactory factory, String name, SVXTemporalSpecSignalConsumer spec)
 	{
 		try {
@@ -40,4 +40,5 @@ public class SVXBooleanConsumerWrapper extends SVXConsumerWrapper implements Boo
 			e.printStackTrace();
 		}
 	}
+	
 }

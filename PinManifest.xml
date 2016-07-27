@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Robot>
+<PWM channel="0">
+	<Output></Output>
+</PWM>
+<Joystick channel = "1">
+	<Axis axis = "1"></Axis>
+</Joystick>
+<Encoder aChannel="0" bChannel = "1">
+	<Counts></Counts>
+	<Reverse reversed = "false"></Reverse>
+</Encoder>
+</Robot>

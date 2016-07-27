@@ -5,7 +5,6 @@ import ccre.channel.DerivedFloatInput;
 import ccre.channel.EventInput;
 import ccre.channel.EventOutput;
 import ccre.channel.FloatInput;
-import svconnect.RoboRioBoard;
 
 /**
  * A simulated encoder that relies on VHDL logic to handle step counting. Creates a port for encoder counts and whether or not to reverse.
@@ -19,8 +18,8 @@ public class SVXPortEncoder extends DerivedFloatInput{
 	public SVXPortEncoder(int aChannel, int bChannel, boolean reverse, EventInput resetWhen, EventInput updateOn)
 	{
 		super(updateOn);
-		RoboRioBoard.setEncoderReversePort(aChannel, bChannel, reverse);
-		port = RoboRioBoard.encoderCountsPort(aChannel, bChannel);
+		RoboRioBoard.Encoder(aChannel, bChannel).Reverse(reverse);
+		port = RoboRioBoard.Encoder(aChannel, bChannel).Counts();
 	}
 
 	@Override

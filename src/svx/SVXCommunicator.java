@@ -102,7 +102,7 @@ public class SVXCommunicator implements SchematicCommunicator
 					try {
 						time.forward(incrementMillis); 
 						timeUpdated.event(); 
-						Logger.info("Time updated");
+						System.out.println("Simulated time for: " + Time.currentTimeMillis() + "ms");
 					} catch (InterruptedException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -146,6 +146,7 @@ public class SVXCommunicator implements SchematicCommunicator
 					simulationFinished.set(false);
 					simulationStarted.set(true);
 					try {
+						
 						target.execute();
 					} catch (SVXStatusException e) {
 						// TODO Auto-generated catch block
@@ -253,7 +254,6 @@ public class SVXCommunicator implements SchematicCommunicator
 	//		inputsFinished.onPress().send(updateTimeEvent);
 			target = new SVXComponentTarget(false); //Target is not the first node in the stack.
 			factory = target.getFactory();
-		
 			SVXTemporalSpecChannel spec = new SVXTemporalSpecChannel
 					(SVXTimeRange.SVX_ZERO_TIME_RANGE, 0, SVXTimeRange.SVX_ZERO_TIME_RANGE, 0,SVXTimeRange.SVX_ZERO_TIME_RANGE, 0);
 			factory.createSVXComponentChannel(CHANNEL_NAME, spec);

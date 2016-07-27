@@ -14,7 +14,7 @@ import ccre.channel.BooleanInput;
  */
 public class SVXIntegerToBooleanConsumerWrapper extends SVXConsumerWrapper implements BooleanInput{
 	
-	boolean currentValue;
+	boolean currentValue = false;
 	ISVXComponentSignalConsumerInteger consumer;
 	@Override 
 	public void notification()throws SVXStatusException
@@ -29,6 +29,7 @@ public class SVXIntegerToBooleanConsumerWrapper extends SVXConsumerWrapper imple
 		{
 			currentValue = false;
 		}
+		System.out.println("Bool converter: " + currentValue);
 		super.notification();
 		
 	}

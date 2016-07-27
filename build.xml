@@ -26,9 +26,11 @@
 	<property name="src.dir" value="src" />
 	<property name="build.dir" value="build" />
     <property name="CommonChickenRuntimeEngine.location" value="../../common-chicken-runtime-engine/CommonChickenRuntimeEngine"/>
-
+	
     <path id="SVConnection.classpath">
-        <pathelement location="bin"/>
+        <pathelement location = "bin"/>
+    	<pathelement location = "${CommonChickenRuntimeEngine.location}/CCRE.jar"/>
+    	<pathelement location = "../../../../MentorGraphics/conneXion_2016.1/svx/java/tools/eclipse_ganymede/SVXJava/parts/svx.jar"/>
     </path>
 	<target name="deps">
 			<delete file="Dependencies.jar" />
@@ -40,20 +42,22 @@
 	<target name ="clean">
 		<delete file = "SVConnection.jar"/>
 	</target>
-	<target name="compile" depends = "deps">
+	<target name="compile">
 		<delete dir="${build.dir}" />
 		<mkdir dir="${build.dir}" />
-		<javac destdir="${build.dir}" srcdir="${src.dir}" includeantruntime="false" classpath = "Dependencies.jar" debug="true"  >
+		<javac destdir="${build.dir}" srcdir="${src.dir}" includeantruntime="false" debug="true"  >
+			<classpath refid="SVConnection.classpath"></classpath>
 			<src path = "src"/>
 		</javac>
 	</target>
 
 	<target name="build-jar" depends="compile" >
 		<delete file="SVConnection.jar" />
-		<jar destfile="SVConnection.jar" update="true" >
-			<fileset dir="${build.dir}" includes="**/*.class" />
-			<fileset dir="${build.dir}" includes="**/*.properties" />
+		<jar basedir="${build.dir}" destfile="SVConnection.jar" update="true" >
+			<zipfileset src = "${CommonChickenRuntimeEngine.location}/CCRE.jar"></zipfileset>
 			<zipfileset src = "../../../../MentorGraphics/conneXion_2016.1/svx/java/tools/eclipse_ganymede/SVXJava/parts/svx.jar"></zipfileset>
+			<fileset file  = "../../../../MentorGraphics/conneXion_2016.1/svx/java/tools/vc2008/parts/SVXNativeLibrary.dll"/>
+			<!--<fileset file = "../../../../MentorGraphics/conneXion_2016.1/svx/mentor/mgls/parts" />-->
 		</jar>
 	</target>
 </project>

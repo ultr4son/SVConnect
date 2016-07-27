@@ -16,6 +16,8 @@ import ccre.channel.FloatOperation;
 import ccre.channel.FloatOutput;
 import ccre.channel.UpdatingInput;
 import ccre.ctrl.ExtendedMotor;
+import ccre.ctrl.ExtendedMotor.OutputControlMode;
+import ccre.ctrl.ExtendedMotorFailureException;
 import ccre.ctrl.Joystick;
 import ccre.ctrl.binding.ControlBindingCreator;
 import ccre.discrete.DerivedDiscreteInput;
@@ -25,7 +27,6 @@ import ccre.drivers.ctre.talon.TalonExtendedMotor;
 import ccre.frc.FRCImplementation;
 import ccre.frc.FRCMode;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
-import svconnect.RoboRioBoard;
 
 public class SVXFRC implements FRCImplementation{
 
@@ -33,7 +34,7 @@ public class SVXFRC implements FRCImplementation{
 	public Joystick getJoystick(int id) {
 		return new SVXJoystick(id);
 	}
-
+	//TODO Might just be passed Jag, talon, victor
 	/**
 	 * Create a motor. Note that CAN based motor controllers are not yet supported.
 	 */
@@ -43,6 +44,12 @@ public class SVXFRC implements FRCImplementation{
 		{
 		//TODO: Figure out how CAN is going to be simulated.
 		case JAGUAR:
+			try {
+				return new SVXJaguar(id).asMode(OutputControlMode.GENERIC_FRACTIONAL);
+			} catch (ExtendedMotorFailureException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		case TALONSRX:
 			throw new NotImplementedException();
 		case VICTORSP:
@@ -50,7 +57,7 @@ public class SVXFRC implements FRCImplementation{
 		case SPARK:	
 		case TALON:	
 		case VICTOR:
-			return RoboRioBoard.pwmOutputPin(id);
+			return RoboRioBoard.PWM(id).Output();
 		default:
 			throw new IllegalArgumentException("Invalid motor type!");
 		}
@@ -58,7 +65,7 @@ public class SVXFRC implements FRCImplementation{
 
 	@Override
 	public ExtendedMotor makeCANJaguar(int deviceNumber) {
-		return null;
+		return new SVXJaguar(deviceNumber);
 	}
 
 	@Override
@@ -76,35 +83,35 @@ public class SVXFRC implements FRCImplementation{
 
 	@Override
 	public FloatInput makeAnalogInput(int id, EventInput updateOn) {
-		return RoboRioBoard.analogInputPin(id);
+		return RoboRioBoard.Analog(id).Input();
 	}
 
 	@Override
 	public FloatInput makeAnalogInput(int id, int averageBits, EventInput updateOn) {
 		
 		//TODO Figure out what averageBits means
-		return RoboRioBoard.analogInputPin(id);
+		return RoboRioBoard.Analog(id).Input();
 	}
 	@Override
 	public BooleanOutput makeDigitalOutput(int id) {
-		return RoboRioBoard.digitalOutputPin(id);
+		return RoboRioBoard.Digital(id).Output();
 	}
 	
 	//We want DIO to update when the simulation updates, and at no other time.
 	@Override
 	public BooleanInput makeDigitalInput(int id, EventInput updateOn) {
 		
-		return RoboRioBoard.digitalInputPin(id);
+		return RoboRioBoard.Digital(id).Input();
 	}
 	
 	@Override
 	public BooleanInput makeDigitalInputByInterrupt(int id) {
-		return RoboRioBoard.digitalInputPin(id);
+		return RoboRioBoard.Digital(id).Input();
 	}
 
 	@Override
 	public FloatOutput makeServo(int id, float minInput, float maxInput) {
-		FloatOutput raw = RoboRioBoard.pwmOutputPin(id);
+		FloatOutput raw = RoboRioBoard.PWM(id).Output();
 		FloatOutput constrained = new FloatOutput()
 				{
 
@@ -181,19 +188,18 @@ public class SVXFRC implements FRCImplementation{
 
 	@Override
 	public BooleanOutput makeRelayForwardOutput(int channel) {
-		// TODO Auto-generated method stub
-		return null;
+		return RoboRioBoard.Relay(channel).Output();
 	}
 
 	@Override
 	public BooleanOutput makeRelayReverseOutput(int channel) {
-		// TODO Auto-generated method stub
-		return null;
+		//TODO: Actually make reverse
+		return RoboRioBoard.Relay(channel).Output();
 	}
 
 	@Override
 	public FloatInput makeGyro(int port, double sensitivity, EventInput resetWhen, EventInput updateOn) {
-		FloatInput rawVolts = RoboRioBoard.analogInputPin(port);
+		FloatInput rawVolts = RoboRioBoard.Analog(port).Input();
 		FloatCell accumulator = new FloatCell(0.0f);
 		accumulator.accumulateWhen(RoboRioBoard.running(), rawVolts.multipliedBy((float)sensitivity));
 		
@@ -203,7 +209,7 @@ public class SVXFRC implements FRCImplementation{
 
 	@Override
 	public FloatInput getBatteryVoltage(EventInput updateOn) {
- 		return RoboRioBoard.battery();
+ 		return RoboRioBoard.PDB().PDBVolts();
 	}
 
 	@Override
