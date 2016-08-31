@@ -247,7 +247,7 @@ public class SVXCommunicator implements SchematicCommunicator
 		
 		runEvent.event();
 	}
-	protected void _SVXClient(int port)	
+	protected void _SVXClient(int port)		
 	{
 		time = new FakeTime();
 		Time.setTimeProvider(time);
