@@ -6,7 +6,7 @@ import ccre.frc.FRC;
 import ccre.frc.FRCImplementationHolder;
 import svconnect.SchematicCommunicatorHolder;
 import svx.SVXCommunicator;
-import svx.frc.SVXFRC;
+import svx.frc.SchematicFRC;
 
 public class DIOSimulationTest {
 	public static void setupRobot()
@@ -21,7 +21,7 @@ public class DIOSimulationTest {
 	public static void main(String[] args) {
 		SVXCommunicator client = new SVXCommunicator();
 		SchematicCommunicatorHolder.setImplementation(client);
-		FRCImplementationHolder.setImplementation(new SVXFRC());
+		FRCImplementationHolder.setImplementation(new SchematicFRC());
 		setupRobot();
 		client.startCommunications();
 		

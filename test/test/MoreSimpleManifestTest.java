@@ -10,21 +10,16 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
-import ccre.channel.EventInput;
-import ccre.channel.FloatInput;
 import ccre.channel.FloatOutput;
-import ccre.ctrl.PIDController;
 import ccre.frc.FRC;
 import ccre.frc.FRCImplementationHolder;
 import ccre.log.Logger;
-import ccre.scheduler.Scheduler;
 import svconnect.SchematicCommunicatorHolder;
 import svx.SVXCommunicator;
-import svx.SVXBooleanWorkaroundCommunicator;
 import svx.frc.RoboRioBoard;
 import svx.frc.SchematicFRC;
 
-public class FRCPIDTest {
+public class MoreSimpleManifestTest {
 	private static void setupFromManifest(File pinManifest)
 	{
 		if(pinManifest.exists())
@@ -48,24 +43,26 @@ public class FRCPIDTest {
 		}
 
 	}
-	//This is what the user sees
-	public static void setupRobot(){
-		FloatOutput motorController = FRC.victorSP(1);
-		FloatInput joystickSetpoint = FRC.joystick1.axis(1);
-		FloatInput encoder = FRC.encoder(0, 1, false, EventInput.never, FRC.duringTele);
-		PIDController controller = PIDController.createFixed(FRC.duringTele, encoder.multipliedBy(0.25f), joystickSetpoint.multipliedBy(360f), 0.025f, 0.0f, 0.0f);
-		controller.send(motorController);
-
-
+	public static void setupRobot()
+	{
+		FloatOutput log = new FloatOutput() {
+			
+			@Override
+			public void set(float value) {
+				Logger.info(((Float)value).toString());
+				
+			}
+		};
+		FRC.joystick1.axis(1).send(log);
 	}
 	public static void main(String[] args) {
-		SVXCommunicator client = new SVXBooleanWorkaroundCommunicator(); //Use integer generators instead of boolean
+		SVXCommunicator client = new SVXCommunicator();
 		SchematicCommunicatorHolder.setImplementation(client);
 		FRCImplementationHolder.setImplementation(new SchematicFRC());
-		setupFromManifest(new File("PinManifest.xml"));
+		File moreSimpleManifest = new File("MoreSimpleManifest.xml");
+		setupFromManifest(moreSimpleManifest);
 		setupRobot();
 		client.startCommunications();
-		System.out.println("done");
 	}
 
 }

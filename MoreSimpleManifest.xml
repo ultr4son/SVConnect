@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RoboRio>
+	<Joystick ChannelArgs = "1">
+		<Axis ChannelArgs = "1" IOType = "in" ValueType = "real"></Axis>
+	</Joystick>
+</RoboRio>

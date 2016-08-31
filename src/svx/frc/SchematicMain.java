@@ -40,7 +40,7 @@ public class SchematicMain {
 			client = new SVXCommunicator();
 		}
 		SchematicCommunicatorHolder.setImplementation(client);
-		FRCImplementationHolder.setImplementation(new SVXFRC());
+		FRCImplementationHolder.setImplementation(new SchematicFRC());
 		File pinManifestFile = new File(pinManifestPath);
 		preSetup(pinManifestFile);
 		//Generate a new FRCApplication

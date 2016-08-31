@@ -4,6 +4,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -28,91 +29,9 @@ import svconnect.Device;
  * @author tthompso
  *
  */
-public class RoboRioBoard extends Device {
+public class RoboRioBoard {
 	
-	static class FloatInputPort
-	{
-		String name;
-		public FloatInputPort(String name)
-		{
-			this.name = name;
-		}
-		public FloatInput Input()
-		{
-			return floatInputPin(name);
-		}
-	}
-	static class FloatOutputPort
-	{
-		String name;
-		public FloatOutputPort(String name)
-		{
-			this.name = name;
-		}
-		public FloatOutput Output()
-		{
-			return floatOutputPin(name);
-		}
-	}
-	//This makes sense from a manifest point of veiw. Any better way to do this?
-	static class FloatIOPort 
-	{
-		String name;
-		public FloatIOPort(String name)
-		{
-			this.name = name;
-		}
-		public FloatInput Input()
-		{
-			return floatInputPin(name);
-		}
-		public FloatOutput Output()
-		{
-			return floatOutputPin(name);
-		}
-	}
-	
-	static class BooleanInputPort
-	{
-		String name;
-		public BooleanInputPort(String name)
-		{
-			this.name = name;
-		}
-		public BooleanInput Input()
-		{
-			return booleanInputPin(name);
-		}
-	}
-	static class BooleanOutputPort
-	{
-		String name;
-		public BooleanOutputPort(String name)
-		{
-			this.name = name;
-		}
-		public BooleanOutput Output()
-		{
-			return booleanOutputPin(name);
-		}
-	}
-	static class BooleanIOPort
-	{
-		String name;
-		
-		public BooleanIOPort(String name)
-		{
-			this.name = name;
-		}
-		public BooleanInput Input()
-		{
-			return booleanInputPin(name);
-		}
-		public BooleanOutput Output()
-		{
-			return booleanOutputPin(name);
-		}
-	}
+
 	/**
 	 * A common class for objects that have a channel parameter.
 	 * @author tthompso
@@ -123,6 +42,7 @@ public class RoboRioBoard extends Device {
 		int channel;
 		public Channel(int channel)
 		{
+			
 			this.channel = channel;
 		}
 	}
@@ -135,49 +55,48 @@ public class RoboRioBoard extends Device {
 	{
 		public CANJaguar(int channel) {
 			super(channel);
+			BUS_NAME = this.getClass().getSimpleName().toUpperCase();
 		}
-		static final String CAN = "CAN";
-		
-		static final String TEMPERATURE = "TEMPERATURE";
-		static final String BUS_VOLTS = "BUS_VOLTS";
-		static final String OUT_VOLTS = "OUT_VOLTS";
-		static final String OUT_CURRENT = "OUT_CURRENT";
-		static final String OUTPUT_MODE = "CONTROL_MODE";
-		static final String P = "P";
-		static final String I = "I";
-		static final String D = "D";
-
+		static String BUS_NAME;
+//		static final String TEMPERATURE = "TEMPERATURE";
+//		static final String BUS_VOLTS = "BUS_VOLTS";
+//		static final String OUT_VOLTS = "OUT_VOLTS";
+//		static final String OUT_CURRENT = "OUT_CURRENT";
+//		static final String OUTPUT_MODE = "CONTROL_MODE";
+//		static final String P = "P";
+//		static final String I = "I";
+//		static final String D = "D";
 		/**
 		 * Creates a port that represents the bus voltage being returned by the CANJaguar
 		 * @return
 		 */
-		public FloatInputPort InBusVoltage()
+		public FloatInput BusVoltage()
 		{
-			return new FloatInputPort(formatPinName(CAN, BUS_VOLTS, channel));
+			return Device.floatInputPin(formatPinName(BUS_NAME, "BUSVOLTAGE", channel));
 		}
 		/**
 		 * Creates a port that represents the output voltage being returned by the CANJaguar
 		 * @return
 		 */
-		public FloatInputPort InOutputVoltage()
+		public FloatInput OutputVoltage()
 		{
-			return new FloatInputPort(formatPinName(CAN, OUT_VOLTS, channel));
+			return Device.floatInputPin(formatPinName(BUS_NAME, "OUTPUTVOLTAGE", channel));
 		}
 		/**
 		 * Creates a port that represents the output current being returned by the CANJaguar
 		 * @return
 		 */
-		public FloatInputPort InOutputCurrent()
+		public FloatInput OutputCurrent()
 		{
-			return new FloatInputPort(formatPinName(CAN, OUT_CURRENT, channel));
+			return Device.floatInputPin(formatPinName(BUS_NAME, "OUTPUTCURRENT", channel));
 		}
 		/**
 		 * Creates a port that represents the temperature being returned by the CANJaguar
 		 * @return
 		 */
-		public FloatInputPort InTemperature()
+		public FloatInput Temperature()
 		{
-			return new FloatInputPort(formatPinName(CAN, TEMPERATURE, channel));
+			return Device.floatInputPin(formatPinName(BUS_NAME, "TEMPERATURE", channel));
 		}
 		/**
 		 * Creates a port that will output the requested control mode by the RoboRio
@@ -186,7 +105,7 @@ public class RoboRioBoard extends Device {
 		 */
 		public FloatOutput OutControlMode(OutputControlMode mode)
 		{
-			FloatOutput pin = floatOutputPin(formatPinName(CAN, OUTPUT_MODE, channel));
+			FloatOutput pin = Device.floatOutputPin(formatPinName(BUS_NAME, "OUTCONTROLMODE", channel));
 			pin.set(mode.ordinal());
 			return pin;
 		}
@@ -198,9 +117,9 @@ public class RoboRioBoard extends Device {
 		 */
 		public void PID(float P, float I, float D)
 		{
-			FloatOutput pPin = floatOutputPin(formatPinName(CAN, this.P, channel));
-			FloatOutput iPin = floatOutputPin(formatPinName(CAN, this.I, channel));
-			FloatOutput dPin = floatOutputPin(formatPinName(CAN, this.D, channel));
+			FloatOutput pPin = Device.floatOutputPin(formatPinName(BUS_NAME, "P", channel));
+			FloatOutput iPin = Device.floatOutputPin(formatPinName(BUS_NAME, "I", channel));
+			FloatOutput dPin = Device.floatOutputPin(formatPinName(BUS_NAME, "D", channel));
 			
 			pPin.set(P);
 			iPin.set(I);
@@ -220,11 +139,12 @@ public class RoboRioBoard extends Device {
 			{
 				throw new IllegalArgumentException("Pin number is invalid!");
 			}
+			BUS_NAME = this.getClass().getSimpleName().toUpperCase();
+
 		}
+		static String BUS_NAME;
 		static final int MAX_DIO = 9;
-		static final String DIGITAL = "D";
-		static final String IN = "IN";
-		static final String OUT = "OUT";
+		
 		/**
 		 * A representation of a digital input pin on a RoboRio in a schematic.
 		 * @return 
@@ -232,7 +152,7 @@ public class RoboRioBoard extends Device {
 		public BooleanInput Input()
 		{
 
-			return booleanInputPin(formatPinName(DIGITAL, IN, channel));
+			return Device.booleanInputPin(formatPinName(BUS_NAME, "INPUT", channel));
 
 		}
 		/**
@@ -241,7 +161,7 @@ public class RoboRioBoard extends Device {
 		 */
 		public BooleanOutput Output()
 		{
-			return booleanOutputPin(formatPinName(DIGITAL, OUT, channel));
+			return Device.booleanOutputPin(formatPinName(BUS_NAME, "OUTPUT", channel));
 		}
 		
 	}
@@ -249,13 +169,11 @@ public class RoboRioBoard extends Device {
 	{
 		static final int MAX_JOYSTICK = 6;
 
-		static final String JOYSTICK = "JOY";
-		static final String AXIS = "AXIS";
-		static final String BUTTON = "BUTTON";
-		static final String POV  = "POV";
+		static String BUS_NAME;
 		
 		public Joystick(int channel) {
 			super(channel);
+			BUS_NAME = this.getClass().getSimpleName().toUpperCase();
 			if(channel < 0 || channel > MAX_JOYSTICK)
 			{
 				throw new IllegalArgumentException("Joystick channel is invalid!");
@@ -268,7 +186,7 @@ public class RoboRioBoard extends Device {
 		 */
 		public FloatInput Axis(int axis)
 		{
-			return floatInputPin(formatPinName(JOYSTICK, AXIS, channel, axis));
+			return Device.floatInputPin(formatPinName(BUS_NAME, "AXIS", channel, axis));
 		}
 		/**
 		 * A representation of a joystick button on a specific channel and button.
@@ -277,14 +195,14 @@ public class RoboRioBoard extends Device {
 		 */
 		public BooleanInput Button(int button)
 		{
-			return booleanInputPin(formatPinName(JOYSTICK, BUTTON, channel, button));
+			return Device.booleanInputPin(formatPinName(BUS_NAME, "BUTTON", channel, button));
 		}
 		/**
 		 *  A representation of a joystick POV.
 		 */
 		public FloatInput POV()
 		{
-			return floatInputPin(formatPinName(JOYSTICK, POV, channel));
+			return Device.floatInputPin(formatPinName(BUS_NAME, "POV", channel));
 		}
 	}
 	static class Encoder
@@ -297,22 +215,23 @@ public class RoboRioBoard extends Device {
 			}
 			this.aChannel = aChannel;
 			this.bChannel = bChannel;
+			BUS_NAME = this.getClass().getSimpleName().toUpperCase();
+
 		}
 		int aChannel, bChannel;
+		static String BUS_NAME;
 		static final int MAX_DIO = 9;
-		static final String ENCODER = "ENCODER";
-		static final String REVERSE = "REVERSE";
-		static final String COUNTS = "COUNTS";
+	
 		public void Reverse(boolean reverse)
 		{
-			BooleanOutput pin = booleanOutputPin(formatPinName(ENCODER, REVERSE, aChannel, bChannel));
+			BooleanOutput pin = Device.booleanOutputPin(formatPinName(BUS_NAME, "REVERSE", aChannel, bChannel));
 			pin.set(reverse);
 		}
 
 		public FloatInput Counts()
 		{
-			
-			return floatInputPin(formatPinName(ENCODER, COUNTS, aChannel, bChannel));
+			Reverse(false);
+			return Device.floatInputPin(formatPinName(BUS_NAME, "COUNTS", aChannel, bChannel));
 		}
 	}
 	static class PWM extends Channel
@@ -323,31 +242,32 @@ public class RoboRioBoard extends Device {
 			{
 				throw new IllegalArgumentException("Pin number is invalid!");
 			}
+			BUS_NAME = this.getClass().getSimpleName().toUpperCase();
+
 		}
-		static final String PWM = "PWM";
-		static final String OUTPUT = "OUTPUT";
+		static String BUS_NAME;
 		static final int MAX_PWM = 9;
 		public FloatOutput Output()
 		{
 			
-			return floatOutputPin(formatPinName(PWM, OUTPUT, channel));
+			return Device.floatOutputPin(formatPinName(BUS_NAME, "OUTPUT", channel));
 		}
 
 	}
 	static class Analog extends Channel
 	{	
-		static final String ANALOG = "ANALOG";
-		static final String INPUT = "INPUT";
 		static final int MAX_ANALOG_IN = 4;
 		
 		public Analog(int channel) {
 			super(channel);
 			if(channel > MAX_ANALOG_IN || channel < 0)
 			{
-				throw new IllegalArgumentException("Pin number is invalid!");
+				throw new IllegalArgumentException("Pin number is invalid!");			
 			}
+			BUS_NAME = this.getClass().getSimpleName().toUpperCase();
 
 		}
+		static String BUS_NAME;
 		/**
 		 * A representation of a analog input pin on a RoboRio in a schematic.
 		 * @param pinNumber Number of the analog input pin. Must be between 0-{@value #MAX_ANALOG_IN}
@@ -355,7 +275,7 @@ public class RoboRioBoard extends Device {
 		 */
 		public FloatInput Input()
 		{
-			return floatInputPin(formatPinName(ANALOG, INPUT, channel));
+			return Device.floatInputPin(formatPinName(BUS_NAME, "INPUT", channel));
 		}		
 	}
 	/**
@@ -373,22 +293,26 @@ public class RoboRioBoard extends Device {
 			{
 				throw new IllegalArgumentException("Pin number is invalid!");
 			}
+			BUS_NAME = this.getClass().getSimpleName().toUpperCase();
+
 		}
+		static String BUS_NAME;
 		/**
 		 * Create an output port on the relay bus
 		 * @return
 		 */
 		public BooleanOutput Output()
 		{
-			return booleanOutputPin(formatPinName(RELAY, new String[]{}, new int[]{channel}));
+			return Device.booleanOutputPin(formatPinName(BUS_NAME, "OUTPUT", new int[]{channel}));
 		}
 	}
 	static class SolenoidModule
 	{
-		static final String SOLENOID = "SOLENOID";
-		static final String PRESSURE_SWITCH = "PRESSURE_SWITCH";
-		static final String COMPRESSOR_RUNNING = "COMPRESSOR_RUNNING";
-		static final String COMPRESSOR_CURRENT = "COMPRESSOR_CURRENT";
+		public SolenoidModule()
+		{
+			BUS_NAME = this.getClass().getSimpleName();
+		}
+		static String BUS_NAME;
 		
 		/**
 		 * Create a port that gives the pressure switch state coming from the Solenoid Module
@@ -396,7 +320,7 @@ public class RoboRioBoard extends Device {
 		 */
 		public BooleanInput PressureSwitch()
 		{
-			return booleanInputPin(formatPinName(SOLENOID, PRESSURE_SWITCH));
+			return Device.booleanInputPin(formatPinName(BUS_NAME, "PRESSURESWITCH"));
 		}
 		/**
 		 * Create a port that gives the state of the compressor coming from the solenoid module
@@ -404,7 +328,7 @@ public class RoboRioBoard extends Device {
 		 */
 		public BooleanInput CompressorRunning()
 		{
-			return booleanInputPin(formatPinName(SOLENOID, COMPRESSOR_RUNNING));
+			return Device.booleanInputPin(formatPinName(BUS_NAME, "COMPRESSORRUNNING"));
 		}
 		/**
 		 * Create a port that gives the compressor current coming from the solenoid module
@@ -412,21 +336,24 @@ public class RoboRioBoard extends Device {
 		 */
 		public FloatInput CompressorCurrent()
 		{
-			return floatInputPin(formatPinName(SOLENOID, COMPRESSOR_CURRENT));
+			return Device.floatInputPin(formatPinName(BUS_NAME, "COMPRESSORCURRENT"));
 		}
 		
 	}
 	static class PDB
 	{
-		static final String POWER_DISTRIBUTION_BOARD = "PDB";
-		static final String POWER_CHANNEL = "POWER_CHANNEL";
+		public PDB()
+		{
+			BUS_NAME = this.getClass().getSimpleName().toUpperCase();
+		}
+		static String BUS_NAME;
 		public FloatInput PowerChannelVolts(int channel)
 		{
-			return floatInputPin(formatPinName(POWER_DISTRIBUTION_BOARD, POWER_CHANNEL, channel));
+			return Device.floatInputPin(formatPinName(BUS_NAME, "POWERCHANNELVOLTS", channel));
 		}
 		public FloatInput PDBVolts()
 		{
-			return floatInputPin(formatPinName(POWER_DISTRIBUTION_BOARD, new String[]{}, new int[]{}));
+			return Device.floatInputPin(formatPinName(BUS_NAME, "PDBVOLTS", new int[]{}));
 		}
 	}
 	
@@ -571,36 +498,70 @@ public class RoboRioBoard extends Device {
 	private static Object invokeXML(Node node, Class<?> searchClass, Object invokeObject)
 	{
 		String portClassName = node.getNodeName();
-		LinkedHashMap<String, String> portClassArguments = getAttributes(node); //Get the arguments to instantiate the port
+		
+		
 		Method portClassAccessor = null;
 		try
 		{
-			portClassAccessor = searchClass.getMethod(portClassName, getAttributeTypes(portClassArguments).toArray(new Class<?>[0]));//findMethodByParamName(searchClass, portClassArguments.keySet());
+			List<String>portClassArguments = getAttributes(node); //Get the arguments to instantiate the port
+			Class<?>[] portClassArgTypes =  getAttributeTypes(portClassArguments).toArray(new Class<?>[0]);
+			portClassAccessor = searchClass.getMethod(portClassName, portClassArgTypes);//findMethodByParamName(searchClass, portClassArguments.keySet());
 			return portClassAccessor.invoke(invokeObject, attributesToArgs(portClassArguments).toArray());
 
 		}
-		catch(IllegalAccessException | IllegalArgumentException | InvocationTargetException |NullPointerException | NoSuchMethodException ex)
+		
+		catch(IllegalArgumentException | NoSuchMethodException ex)
 		{
-			Logger.severe("Could not instantiate " + portClassName);
+			Logger.warning("Could not find port or bus " + portClassName, ex);
 		}
+		
+		catch (InvocationTargetException | IllegalAccessException e)
+		{
+			Logger.warning("Could not instantiate " + portClassName + " from manifest", e);
+		
+		} catch (Exception e) {
+			Logger.warning("Error", e);
+		}
+		
 		return null;
 	}
-	private static LinkedHashMap<String, String> getAttributes(Node node)
+	private static List<String> getAttributes(Node node) throws Exception
 	{
-		LinkedHashMap<String, String> attributesMap = new LinkedHashMap<String, String>();
 		NamedNodeMap attributes = node.getAttributes();
+		
 		for(int i = 0; i < attributes.getLength(); i++)
 		{
-			attributesMap.put(attributes.item(i).getNodeName(), attributes.item(i).getNodeValue());
+			Node attribute = attributes.item(i);
+			if(attribute.getNodeName() == "ChannelArgs")
+			{
+				if(attribute.getNodeValue() == "")
+				{
+					return new ArrayList<String>();
+				}
+				String[] args = attribute.getNodeValue().split(",");
+				
+				return Arrays.asList(args);
+			}
 		}
-		return attributesMap;
+		throw new Exception("Could not find arguments to node " + node.getNodeName());
 	}
-	private static List<Class<?>> getAttributeTypes(LinkedHashMap<String, String> attributes)
+
+//	private static LinkedHashMap<String, String> getAttributes(Node node)
+//	{
+//		LinkedHashMap<String, String> attributesMap = new LinkedHashMap<String, String>();
+//		NamedNodeMap attributes = node.getAttributes();
+//		for(int i = 0; i < attributes.getLength(); i++)
+//		{
+//			attributesMap.put(attributes.item(i).getNodeName(), attributes.item(i).getNodeValue());
+//		}
+//		return attributesMap;
+//	}
+	private static List<Class<?>> getAttributeTypes(List<String> attributes)
 	{
 		List<Class<?>> types = new ArrayList<>();
-		for(String value : attributes.values())
+		for(String value : attributes)
 		{
-			if(Pattern.matches("[0-9]*", value))
+			if(Pattern.matches("[0-9]+", value))
 			{
 				types.add(int.class);
 			}
@@ -608,17 +569,35 @@ public class RoboRioBoard extends Device {
 			{
 				types.add(boolean.class);
 			}
-			else
-			{
-				types.add(String.class);
-			}
+	
 		}
+	
 		return types;
 	}
-	private static List<Object> attributesToArgs(LinkedHashMap<String, String> attributes)
+//	private static List<Class<?>> getAttributeTypes(LinkedHashMap<String, String> attributes)
+//	{
+//		List<Class<?>> types = new ArrayList<>();
+//		for(String value : attributes.values())
+//		{
+//			if(Pattern.matches("[0-9]*", value))
+//			{
+//				types.add(int.class);
+//			}
+//			else if(Pattern.matches("true|false", value))
+//			{
+//				types.add(boolean.class);
+//			}
+//			else
+//			{
+//				types.add(String.class);
+//			}
+//		}
+//		return types;
+//	}
+	private static List<Object> attributesToArgs(List<String> attributes)
 	{
 		List<Object> args = new ArrayList<>();
-		for(String value : attributes.values())
+		for(String value : attributes)
 		{
 			if(Pattern.matches("[0-9]*", value))
 			{

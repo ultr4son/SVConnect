@@ -20,7 +20,7 @@ import ccre.log.Logger;
 import svconnect.SchematicCommunicatorHolder;
 import svx.SVXCommunicator;
 import svx.frc.RoboRioBoard;
-import svx.frc.SVXFRC;
+import svx.frc.SchematicFRC;
 
 public class RoboRioBoardConfigTest {
 
@@ -36,7 +36,7 @@ public class RoboRioBoardConfigTest {
 	public static void main(String[] args) {
 		SVXCommunicator client = new SVXCommunicator();
 		SchematicCommunicatorHolder.setImplementation(client);
-		FRCImplementationHolder.setImplementation(new SVXFRC());
+		FRCImplementationHolder.setImplementation(new SchematicFRC());
 		File xmlFile = new File("PinManifest.xml");
 		if(xmlFile.exists())
 		{

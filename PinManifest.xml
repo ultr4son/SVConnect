@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Robot>
-<PWM channel="0">
-	<Output></Output>
-</PWM>
-<Joystick channel = "1">
-	<Axis axis = "1"></Axis>
-</Joystick>
-<Encoder aChannel="0" bChannel = "1">
-	<Counts></Counts>
-	<Reverse reversed = "false"></Reverse>
-</Encoder>
-</Robot>
+<RoboRio>
+	<PWM ChannelArgs="1" >
+		<Output ChannelArgs = "" IOType = "out" ValueType = "real"></Output>
+	</PWM>
+	<Joystick ChannelArgs = "1">
+		<Axis ChannelArgs = "1" IOType = "in" ValueType = "real"></Axis>
+	</Joystick>
+	<Encoder ChannelArgs = "0,1">
+		<Counts ChannelArgs ="" IOType = "in" ValueType = "real"></Counts>
+	</Encoder>
+</RoboRio>

@@ -24,6 +24,7 @@ import ccre.channel.FloatOutput;
 import ccre.log.Logger;
 import ccre.time.FakeTime;
 import ccre.time.Time;
+import ccre.timers.Ticker;
 import svconnect.SchematicCommunicator;
 
 /**
@@ -243,9 +244,10 @@ public class SVXCommunicator implements SchematicCommunicator
 	 */
 	@Override
 	public void startCommunications() {
+		
 		runEvent.event();
 	}
-	protected void _SVXClient(int port)
+	protected void _SVXClient(int port)	
 	{
 		time = new FakeTime();
 		Time.setTimeProvider(time);

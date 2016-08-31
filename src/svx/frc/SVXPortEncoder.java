@@ -18,8 +18,8 @@ public class SVXPortEncoder extends DerivedFloatInput{
 	public SVXPortEncoder(int aChannel, int bChannel, boolean reverse, EventInput resetWhen, EventInput updateOn)
 	{
 		super(updateOn);
-		RoboRioBoard.Encoder(aChannel, bChannel).Reverse(reverse);
 		port = RoboRioBoard.Encoder(aChannel, bChannel).Counts();
+		RoboRioBoard.Encoder(aChannel, bChannel).Reverse(reverse);
 	}
 
 	@Override

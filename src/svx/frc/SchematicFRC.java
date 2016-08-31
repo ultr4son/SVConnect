@@ -27,8 +27,9 @@ import ccre.drivers.ctre.talon.TalonExtendedMotor;
 import ccre.frc.FRCImplementation;
 import ccre.frc.FRCMode;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+import svconnect.Device;
 
-public class SVXFRC implements FRCImplementation{
+public class SchematicFRC implements FRCImplementation{
 
 	@Override
 	public Joystick getJoystick(int id) {
@@ -137,7 +138,7 @@ public class SVXFRC implements FRCImplementation{
 	//TODO: Will probably want to add some schematic side thing to select what mode to simulate.
 	@Override
 	public BooleanInput getIsDisabled() {
-		return RoboRioBoard.started().not();
+		return Device.started().not();
 	}
 
 	@Override
@@ -157,7 +158,7 @@ public class SVXFRC implements FRCImplementation{
 
 					@Override
 					protected FRCMode apply() {
-						if(RoboRioBoard.started().get())
+						if(Device.started().get())
 						{
 							return FRCMode.TELEOP;
 						}
@@ -172,7 +173,7 @@ public class SVXFRC implements FRCImplementation{
 
 	@Override
 	public BooleanInput getIsFMS() {
-		return RoboRioBoard.started();
+		return Device.started();
 	}
 
 	@Override
@@ -201,7 +202,7 @@ public class SVXFRC implements FRCImplementation{
 	public FloatInput makeGyro(int port, double sensitivity, EventInput resetWhen, EventInput updateOn) {
 		FloatInput rawVolts = RoboRioBoard.Analog(port).Input();
 		FloatCell accumulator = new FloatCell(0.0f);
-		accumulator.accumulateWhen(RoboRioBoard.running(), rawVolts.multipliedBy((float)sensitivity));
+		accumulator.accumulateWhen(Device.running(), rawVolts.multipliedBy((float)sensitivity));
 		
 		return accumulator;
 	
@@ -214,7 +215,7 @@ public class SVXFRC implements FRCImplementation{
 
 	@Override
 	public EventInput getGlobalPeriodic() {
-		return RoboRioBoard.running();
+		return Device.running();
 	}
 
 	@Override
@@ -229,12 +230,12 @@ public class SVXFRC implements FRCImplementation{
 
 	@Override
 	public EventInput getStartTele() {
- 		return RoboRioBoard.started().onPress();
+ 		return Device.started().onPress();
 	}
 
 	@Override
 	public EventInput getDuringTele() {
-		return RoboRioBoard.running();
+		return Device.running();
 	}
 
 	@Override
@@ -249,7 +250,7 @@ public class SVXFRC implements FRCImplementation{
 
 	@Override
 	public EventInput getStartDisabled() {
-		return RoboRioBoard.ended().onPress();
+		return Device.ended().onPress();
 	}
 
 	@Override

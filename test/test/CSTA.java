@@ -24,7 +24,7 @@ import svx.SVXBooleanWorkaroundCommunicator;
 import svx.frc.RoboRioBoard;
 import svx.frc.SchematicFRC;
 
-public class FRCPIDTest {
+public class CSTA {
 	private static void setupFromManifest(File pinManifest)
 	{
 		if(pinManifest.exists())
@@ -50,19 +50,20 @@ public class FRCPIDTest {
 	}
 	//This is what the user sees
 	public static void setupRobot(){
-		FloatOutput motorController = FRC.victorSP(1);
-		FloatInput joystickSetpoint = FRC.joystick1.axis(1);
-		FloatInput encoder = FRC.encoder(0, 1, false, EventInput.never, FRC.duringTele);
-		PIDController controller = PIDController.createFixed(FRC.duringTele, encoder.multipliedBy(0.25f), joystickSetpoint.multipliedBy(360f), 0.025f, 0.0f, 0.0f);
-		controller.send(motorController);
-
-
+//		FloatInput joystick = FRC.joystick1.axis(1);
+		FloatOutput pwm1 = FRC.victor(1);
+//		FloatOutput pwm2 = FRC.victor(2);
+//		FloatOutput pwm3 = FRC.victor(3);
+//		joystick.dividedBy(5.0).send(pwm1);
+//		joystick.dividedBy(2.0f).send(pwm2);
+//		joystick.send(pwm3);
+		pwm1.set(1.0f);
 	}
 	public static void main(String[] args) {
 		SVXCommunicator client = new SVXBooleanWorkaroundCommunicator(); //Use integer generators instead of boolean
 		SchematicCommunicatorHolder.setImplementation(client);
 		FRCImplementationHolder.setImplementation(new SchematicFRC());
-		setupFromManifest(new File("PinManifest.xml"));
+		//setupFromManifest(new File("PinManifest.xml"));
 		setupRobot();
 		client.startCommunications();
 		System.out.println("done");

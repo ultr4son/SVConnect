@@ -11,6 +11,7 @@ import ccre.channel.FloatInput;
 import ccre.channel.FloatOutput;
 import ccre.ctrl.ExtendedMotor;
 import ccre.ctrl.ExtendedMotorFailureException;
+import svconnect.Device;
 
 public class SVXJaguar extends ExtendedMotor {
 	int pin;
@@ -36,20 +37,20 @@ public class SVXJaguar extends ExtendedMotor {
 
 	@Override
 	public FloatInput asStatus(StatusType type, EventInput updateOn) {
-		return new DerivedFloatInput(RoboRioBoard.running())
+		return new DerivedFloatInput(Device.running())
 				{
 					@Override
 					protected float apply() {
 						switch(type)
 						{
 						case BUS_VOLTAGE:
-							return RoboRioBoard.CANJaguar(pin).InBusVoltage().get();uu
+							return RoboRioBoard.CANJaguar(pin).BusVoltage().get();
 						case OUTPUT_CURRENT:
-							return RoboRioBoard.CANJaguar(pin).InOutputCurrent().get();
+							return RoboRioBoard.CANJaguar(pin).OutputCurrent().get();
 						case OUTPUT_VOLTAGE:
-							return RoboRioBoard.CANJaguar(pin).InOutputVoltage().get(); //TODO: Calculate off current and bus voltage?
+							return RoboRioBoard.CANJaguar(pin).OutputVoltage().get(); //TODO: Calculate off current and bus voltage?
 						case TEMPERATURE:
-							return RoboRioBoard.CANJaguar(pin).InTemperature().get();
+							return RoboRioBoard.CANJaguar(pin).Temperature().get();
 						default:
 						throw new IllegalArgumentException("Invalid type!");
 						}
